@@ -2,6 +2,7 @@ name: Final Dance
 
 on:
   workflow_dispatch:
+  push:
 
 jobs:
   out-docker-job:
@@ -32,6 +33,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/babayaga-creator/final_flask:${{ github.ref_name }}-${ GITHUB_SHA::7}
+          tags: ghcr.io/babayaga-creator/final_flask:${{ github.ref_name }}-${{ github.sha::7 }}
           secrets: |
             GIT_AUTH_TOKEN=${{ secrets.TOKEN }}
