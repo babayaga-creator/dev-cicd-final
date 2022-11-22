@@ -23,7 +23,7 @@ jobs:
 
       - run: |
           echo  ${GITHUB_REF##*/}
-          echo github.ref_name
+          echo ${{ github.ref_name }}
           pwd
           ls -la
 
@@ -32,6 +32,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/babayaga-creator/final_flask:github.ref_name
+          tags: ghcr.io/babayaga-creator/final_flask:${{ github.ref_name }}
           secrets: |
             GIT_AUTH_TOKEN=${{ secrets.TOKEN }}
