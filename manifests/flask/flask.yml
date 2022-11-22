@@ -23,7 +23,7 @@ spec:
         image: __IMAGE_NAME__/__TAG__
         imagePullPolicy: Always
       imagePullSecrets:
-      - name: github
+      - name: regcred
 
         ports:
         - containerPort: 5000
