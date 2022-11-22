@@ -19,6 +19,8 @@ jobs:
 
       - run: |
           echo  ${GITHUB_REF}"-${GITHUB_SHA::7}"
+          pwd
+          ls -la
 
       - name: Build image and push to Docker Hub and GitHub Container Registry
         uses: docker/build-push-action@v3
