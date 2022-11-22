@@ -31,6 +31,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/babayaga-creator/final_flask
+          tags: ghcr.io/babayaga-creator/final_flask:${GITHUB_REF}"-${GITHUB_SHA::7}"
           secrets: |
             GIT_AUTH_TOKEN=${{ secrets.TOKEN }}
