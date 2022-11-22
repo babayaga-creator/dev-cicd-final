@@ -47,12 +47,10 @@ jobs:
           IMAGE_NAME: "ghcr.io/babayaga-creator/final_flask:"
           IMAGE_TAG: ${{ steps.vars.outputs.short_sha }}
 
-
       - uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - uses: azure/aks-set-context@v3
         with:
