@@ -22,7 +22,7 @@ jobs:
           password: ${{ secrets.TOKEN }}
 
       - run: |
-          echo  ${GITHUB_REF}"-${GITHUB_SHA::7}"
+          echo  ${GITHUB_REF##*/}
           pwd
           ls -la
 
@@ -31,6 +31,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/babayaga-creator/final_flask:hurdaci
+          tags: ghcr.io/babayaga-creator/final_flask:${GITHUB_REF##*/}
           secrets: |
             GIT_AUTH_TOKEN=${{ secrets.TOKEN }}
