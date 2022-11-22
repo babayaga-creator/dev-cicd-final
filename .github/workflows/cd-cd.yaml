@@ -25,4 +25,4 @@ jobs:
         with:
           context: ../
           push: true
-          tags: ${GITHUB_REF}"-${GITHUB_SHA::7}"
+          tags: myflask-latest
