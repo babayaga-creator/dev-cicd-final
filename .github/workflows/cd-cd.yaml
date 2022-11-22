@@ -1,0 +1,14 @@
+name: Final Dance
+
+on:
+  workflow_dispatch:
+
+jobs:
+  docker:
+    runs-on: "ubuntu-latest"
+    steps:
+
+      - uses: actions/checkout@v3
+      - run: |
+          pwd
+          ls
