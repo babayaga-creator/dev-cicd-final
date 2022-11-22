@@ -4,11 +4,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  docker:
+  out-docker-job:
     runs-on: "ubuntu-latest"
     steps:
 
       - uses: actions/checkout@v3
-      - run: |
-          pwd
-          ls
+
+      - name: Login to Github Packages
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.GITHUB_USERNAME }}
+          password: ${{ secrets.GITHUB_TOKEN }}
