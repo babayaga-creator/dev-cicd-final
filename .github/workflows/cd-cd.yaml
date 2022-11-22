@@ -56,3 +56,11 @@ jobs:
         with:
           resource-group: aks
           cluster-name: final-task
+
+
+      - uses: Azure/k8s-deploy@v3.1
+        with:
+          namespace: 'final'
+          manifests: |
+            manifests/mysql
+            manifests/flask
