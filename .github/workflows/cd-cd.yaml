@@ -25,7 +25,7 @@ jobs:
       - run: |
           echo  ${GITHUB_REF##*/}
           echo ${{ github.ref_name }}
-          echo ${{ github.sha }}.SubString(0, 8))
+          echo ${{ github.sha }}
           pwd
           ls -la
 
