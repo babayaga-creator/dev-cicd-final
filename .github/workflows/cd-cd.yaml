@@ -16,3 +16,6 @@ jobs:
           registry: ghcr.io
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.TOKEN }}
+
+      - run: |
+          echo  ${GITHUB_REF}" ${GITHUB_SHA}"
