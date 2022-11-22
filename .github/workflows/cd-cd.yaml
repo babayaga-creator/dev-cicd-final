@@ -18,4 +18,4 @@ jobs:
           password: ${{ secrets.TOKEN }}
 
       - run: |
-          echo  ${GITHUB_REF}" ${GITHUB_SHA}"
+          echo  ${GITHUB_REF}"-${GITHUB_SHA::7}"
