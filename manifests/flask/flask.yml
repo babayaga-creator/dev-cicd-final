@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-final
+  labels:
+    app: flask-final
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-final
+
+  template:
+    metadata:
+      labels:
+        app: flask-final
+
+    spec:
+      terminationGracePeriodSeconds: 1
+      containers:
+      - name: flask-image
+        image: __IMAGE_NAME__/__TAG__
+        imagePullPolicy: Always
+      imagePullSecrets:
+      - name: github
+
+        ports:
+        - containerPort: 5000

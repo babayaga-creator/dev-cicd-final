@@ -22,13 +22,6 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.TOKEN }}
 
-      - run: |
-          echo  ${GITHUB_REF##*/}
-          echo ${{ github.ref_name }}
-          echo ${{ github.sha }}
-          pwd
-          ls -la
-
       - name: Set short git commit SHA
         id: vars
         run: |
@@ -43,3 +36,25 @@ jobs:
           tags: ghcr.io/babayaga-creator/final_flask:${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}
           secrets: |
             GIT_AUTH_TOKEN=${{ secrets.TOKEN }}
+
+
+      - uses: cschleiden/replace-tokens@v1
+        with:
+          files: '["manifests/flask/*.yml"]'
+          tokenPrefix: __ # optional, default is #{
+          tokenSuffix: __ # optional, default is }#
+        env:
+          IMAGE_NAME: "ghcr.io/babayaga-creator/final_flask:"
+          IMAGE_TAG: ${{ steps.vars.outputs.short_sha }}
+
+
+      - uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - uses: azure/aks-set-context@v3
+        with:
+          resource-group: aks
+          cluster-name: final-task
