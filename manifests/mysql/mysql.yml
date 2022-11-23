@@ -19,7 +19,12 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3306
+        volumeMounts:
+        - name: mysql-initdb
+          mountPath: /docker-entrypoint-initdb.d
 
+        - name: mysql-pv-volume
+          mountPath: /mnt
 
         env:
         - name: MYSQL_ROOT_PASSWORD
@@ -47,3 +52,11 @@ spec:
         #- name: PGDATA
 
          # value: /var/lib/postgresql/data/pgdata
+      volumes:
+      - name: mysql-initdb
+        persistentVolumeClaim:
+          claimName: mysql-initdb-pv-claim
+
+      - name: mysql-pv-volume
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim
