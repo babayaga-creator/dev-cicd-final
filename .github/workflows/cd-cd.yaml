@@ -66,5 +66,3 @@ jobs:
             manifests/mysql/pv_pvc_mysql.yml
             manifests/mysql/mysql.yml
             manifests/mysql/mysql-service.yml
-
-            manifests/flask
