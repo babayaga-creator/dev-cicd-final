@@ -62,7 +62,9 @@ jobs:
         with:
           namespace: 'final'
           manifests: |
-
+            manifests/mysql/pv_pvc_initb.yml
             manifests/mysql/pv_pvc_mysql.yml
             manifests/mysql/mysql.yml
             manifests/mysql/mysql-service.yml
+
+            manifests/flask

@@ -12,7 +12,7 @@ spec:
   accessModes:
     - ReadOnlyMany
   hostPath:
-    path: "/home/arif/gitrepos/dev-cicd-final/sql"
+    path: "sql"
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
