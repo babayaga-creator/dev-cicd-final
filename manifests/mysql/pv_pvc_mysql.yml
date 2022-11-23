@@ -24,8 +24,8 @@ spec:
 
   hostPath:
 
-   path: "/mnt/data"
---- 
+   path: "/mnt"
+---
 
 apiVersion: v1
 kind: PersistentVolumeClaim
