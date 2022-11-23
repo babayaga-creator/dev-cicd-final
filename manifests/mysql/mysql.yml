@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysql
- 
+
 spec:
   replicas: 1
   selector:
@@ -19,13 +19,8 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3306
-        volumeMounts:
-        - name: mysql-initdb
-          mountPath: /docker-entrypoint-initdb.d
 
-        - name: mysql-pv-volume
-          mountPath: /mnt
-          
+
         env:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
@@ -42,21 +37,13 @@ spec:
           valueFrom:
             secretKeyRef:
               name: mysql-secret
-              key: mysql-password     
+              key: mysql-password
 
         - name: MYSQL_DATABASE
           valueFrom:
             secretKeyRef:
               name: mysql-secret
-              key: mysql-database  
+              key: mysql-database
         #- name: PGDATA
 
-         # value: /var/lib/postgresql/data/pgdata      
-      volumes:
-      - name: mysql-initdb
-        persistentVolumeClaim:
-          claimName: mysql-initdb-pv-claim
-
-      - name: mysql-pv-volume
-        persistentVolumeClaim:
-          claimName: mysql-pv-claim
+         # value: /var/lib/postgresql/data/pgdata
