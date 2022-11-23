@@ -40,10 +40,10 @@ jobs:
       - name: Find and Replace
         uses: jacobtomlinson/gha-find-replace@v2
         with:
-          find: (?m-i)^.*?ghcr.*$
+          find: "ghcr"
           replace: ghcr.io/babayaga-creator/final_flask:${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}
           include: "manifests/flask/flask.yml"
-          regex: true
+          regex: false
 
       - name: Push changes
         uses: ad-m/github-push-action@v0.6.0
