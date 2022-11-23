@@ -46,26 +46,3 @@ jobs:
         env:
           IMAGE_NAME: "ghcr.io/babayaga-creator/final_flask"
           TAG: ${{ steps.vars.outputs.short_sha }}
-
-      - uses: azure/login@v1
-        with:
-
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - uses: azure/aks-set-context@v3
-        with:
-          resource-group: aks
-          cluster-name: final-task
-
-      - name: Checking yml
-        run: |
-          cat manifests/flask/flask.yml
-
-      - uses: Azure/k8s-deploy@v3.1
-        with:
-          namespace: 'final'
-          manifests: |
-            manifests/mysql/pv_pvc_initb.yml
-            manifests/mysql/pv_pvc_mysql.yml
-            manifests/mysql/mysql.yml
-            manifests/mysql/mysql-service.yml
