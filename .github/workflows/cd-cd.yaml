@@ -40,8 +40,8 @@ jobs:
       - name: Find and Replace
         uses: jacobtomlinson/gha-find-replace@v2
         with:
-          find: ^.*?ghcr.*$
-          replace: "image: ghcr.io/babayaga-creator/final_flask:${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}"
+          find: ^.*ghcr.*
+          replace: ghcr.io/babayaga-creator/final_flask:${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}
           include: "manifests/flask/flask.yml"
           regex: true
 
