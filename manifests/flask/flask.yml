@@ -20,10 +20,9 @@ spec:
       terminationGracePeriodSeconds: 1
       containers:
       - name: flask-image
-        image: __IMAGE_NAME__/__TAG__
+        image: "__REPO__:__TAG__"
+        ports:
+        - containerPort: 5000
         imagePullPolicy: Always
       imagePullSecrets:
       - name: regcred
-
-        ports:
-        - containerPort: 5000

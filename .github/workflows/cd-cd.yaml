@@ -61,7 +61,6 @@ jobs:
         run: |
           cat manifests/flask/flask.yml
 
-
       - uses: Azure/k8s-deploy@v3.1
         with:
           namespace: 'final'
