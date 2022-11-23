@@ -41,8 +41,6 @@ jobs:
       - uses: cschleiden/replace-tokens@v1
         with:
           files: '["manifests/flask/*.yml"]'
-          tokenPrefix: __ # optional, default is #{
-          tokenSuffix: __ # optional, default is }#
+
         env:
-          IMAGE_NAME: "ghcr.io/babayaga-creator/final_flask"
-          TAG: ${{ steps.vars.outputs.short_sha }}
+          IMAGE: "ghcr.io/babayaga-creator/final_flask:${{ steps.vars.outputs.short_sha }}"
