@@ -20,9 +20,35 @@ spec:
       terminationGracePeriodSeconds: 1
       containers:
       - name: flask-image
-        image: "__REPO__:__TAG__"
+        image: ghcr.io/babayaga-creator/final_flask:main-b3a9c4f
         ports:
         - containerPort: 5000
         imagePullPolicy: Always
+
+        env:
+        - name: MYSQL_HOST
+          value: mysql.final.svc.cluster.local
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: mysql-root-password
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: mysql-user
+
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: mysql-password
+
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: mysql-database
       imagePullSecrets:
       - name: regcred
