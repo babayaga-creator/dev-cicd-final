@@ -45,5 +45,11 @@ jobs:
           include: "manifests/flask/flask.yml"
           regex: true
 
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.TOKEN }}
+          branch: ${{ github.ref }}
+
       - name: cat deploy
         run: cat manifests/flask/flask.yml
