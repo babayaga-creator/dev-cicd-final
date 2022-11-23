@@ -44,3 +44,6 @@ jobs:
           replace: ghcr.io/babayaga-creator/final_flask:${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}
           include: "manifests/flask/flask.yml"
           regex: true
+
+      - name: cat deploy
+        run: cat manifests/flask/flask.yml
