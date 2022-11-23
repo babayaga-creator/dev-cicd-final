@@ -44,8 +44,8 @@ jobs:
           tokenPrefix: __ # optional, default is #{
           tokenSuffix: __ # optional, default is }#
         env:
-          IMAGE_NAME: "ghcr.io/babayaga-creator/final_flask:"
-          IMAGE_TAG: ${{ steps.vars.outputs.short_sha }}
+          IMAGE_NAME: "ghcr.io/babayaga-creator/final_flask"
+          TAG: ${{ steps.vars.outputs.short_sha }}
 
       - uses: azure/login@v1
         with:
