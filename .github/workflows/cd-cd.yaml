@@ -37,11 +37,10 @@ jobs:
           secrets: |
             GIT_AUTH_TOKEN=${{ secrets.TOKEN }}
 
-
-      - uses: cschleiden/replace-tokens@v1
+      - name: Find and Replace
+        uses: jacobtomlinson/gha-find-replace@v2
         with:
-          files: '["manifests/flask/*.yml"]'
-          tokenPrefix: 'ghcr'
-
-        env:
-          IMAGE: "ghcr.io/babayaga-creator/final_flask:${{ steps.vars.outputs.short_sha }}"
+          find: "ghcr*"
+          replace: ghcr.io/babayaga-creator/final_flask:${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}
+          include: "manifests/flask/flask.yml"
+          regex: true
