@@ -24,7 +24,7 @@ spec:
 
   hostPath:
 
-   path: "/mnt"
+   path: "/mnt/data"
 ---
 
 apiVersion: v1
