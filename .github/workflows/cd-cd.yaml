@@ -57,6 +57,10 @@ jobs:
           resource-group: aks
           cluster-name: final-task
 
+      - name: Checking yml
+        run: |
+          cat manifests/flask/flask.yml
+
 
       - uses: Azure/k8s-deploy@v3.1
         with:
