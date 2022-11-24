@@ -39,7 +39,7 @@ jobs:
 
       - name: Replace image on flask deployment
         run: |
-          ed 's/ghcr.*/ghcr.io/babayaga-creator/final_flask:${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}/g' manifests/flask/flask.yml
+          sed 's/ghcr.*/ghcr.io/babayaga-creator/final_flask:${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}/g' manifests/flask/flask.yml
 
       - name: cat deploy
         run: cat manifests/flask/flask.yml
