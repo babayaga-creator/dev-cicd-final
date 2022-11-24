@@ -14,7 +14,7 @@ jobs:
 
       - run: |
           pip install -r requirements.txt
-          pylint $(git ls-files '*.py')
+          pylint --errors-only $(git ls-files '*.py')
           pytest --cov=shop_app tests/unit
 
 
@@ -51,7 +51,13 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: "ubuntu-latest"
     steps:
+      - uses: actions/checkout@v3
 
+      - name: Set short git commit SHA
+        id: vars
+        run: |
+          calculatedSha=$(git rev-parse --short ${{ github.sha }})
+          echo "::set-output name=short_sha::$calculatedSha"
 
       - name: Replace image on flask deployment
         run: |
