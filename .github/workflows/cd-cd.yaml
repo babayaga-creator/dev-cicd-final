@@ -14,7 +14,7 @@ jobs:
 
       - run: |
           pip install -r requirements.txt
-          pylint $(git ls-files '*.py')
+          pylint --errors-only $(git ls-files '*.py')
           pytest --cov=shop_app tests/unit
 
 
