@@ -44,6 +44,9 @@ jobs:
           secrets: |
             GIT_AUTH_TOKEN=${{ secrets.TOKEN }}
 
+      - name: Run Integration tests
+        run: pytest tests/integration
+
   deploy-production:
     if: github.ref == 'refs/heads/main'
     runs-on: "ubuntu-latest"
