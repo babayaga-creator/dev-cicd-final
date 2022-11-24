@@ -6,10 +6,17 @@ on:
 
 jobs:
   deploy-stage:
+    if: github.ref == 'refs/heads/dev'
     runs-on: "ubuntu-latest"
     steps:
 
       - uses: actions/checkout@v3
+
+      - run: |
+          pip install -r requirements.txt
+          pylint $(git ls-files '*.py')
+          pytest --cov=shop_app tests/unit
+
 
       - name: Set up Docker Buildx
         id: buildx
@@ -36,6 +43,12 @@ jobs:
           tags: ghcr.io/babayaga-creator/final_flask:${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}
           secrets: |
             GIT_AUTH_TOKEN=${{ secrets.TOKEN }}
+
+  deploy-production:
+    if: github.ref == 'refs/heads/main'
+    runs-on: "ubuntu-latest"
+    steps:
+
 
       - name: Replace image on flask deployment
         run: |
