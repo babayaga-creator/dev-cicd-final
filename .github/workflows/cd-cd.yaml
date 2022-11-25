@@ -58,7 +58,7 @@ jobs:
           image_name: final_flask
           image_old_tag: ${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}
           image_new_tag: latest
-          registry: ghcr.io/babayaga-creator/final_flask
+          registry: ghcr.io/babayaga-creator
           registry_username: babayaga-creator
           registry_password: ${{ secrets.TOKEN }}
 
