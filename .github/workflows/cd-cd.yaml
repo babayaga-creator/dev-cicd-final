@@ -54,11 +54,14 @@ jobs:
         run: pytest tests/integration
 
   deploy-production:
+
+
      #if: github.ref == 'refs/heads/main'
      runs-on: "ubuntu-latest"
      needs: deploy-stage
      steps:
 
+      - uses: actions/checkout@v3
       - name: Update the latest image
         id: tag
         uses: tinact/docker.image-retag@master
