@@ -4,6 +4,7 @@ metadata:
   name: flask-final
   labels:
     app: flask-final
+    ver: first
 
 spec:
   replicas: 3
@@ -21,7 +22,7 @@ spec:
       containers:
       - name: flask-image
 
-        image: ghcr.io/babayaga-creator/final_flask:dev-cccef83
+        image: ghcr.io/babayaga-creator/final_flask:main-latest
 
         ports:
         - containerPort: 5000
