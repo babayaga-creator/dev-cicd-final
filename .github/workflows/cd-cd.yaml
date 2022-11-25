@@ -6,7 +6,7 @@ on:
 
 env:
   GITHUB_REGISTRY: "ghcr.io/babayaga-creator/final_flask:"
-  SHORT_SHA: "SHA"
+
 
 jobs:
   deploy-stage:
@@ -39,11 +39,6 @@ jobs:
           calculatedSha=$(git rev-parse --short ${{ github.sha }})
           echo "::set-output name=short_sha::$calculatedSha"
 
-      - name: HADI LAN
-        run: |
-          $SHORT_SHA="HADILAN"
-          echo $SHORT_SHA
-
 
       - name: Build image and push to Docker Hub and GitHub Container Registry
         uses: docker/build-push-action@v3
@@ -57,11 +52,17 @@ jobs:
       - name: Run Integration tests
         run: pytest tests/integration
 
-  deploy-production:
-    if: github.ref == 'refs/heads/main'
-    runs-on: "ubuntu-latest"
-    steps:
-      - uses: actions/checkout@v3
+
+
+      - name: Update the latest image
+        uses: tinact/docker.image-retag@master
+        with:
+          image_name: ghcr.io/babayaga-creator/final_flask
+          image_old_tag: ${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}
+          image_new_tag: latest
+          registry: ghcr.io/babayaga-creator/final_flask
+          registry_username: babayaga-creator
+          registry_password: ${{ secrets.TOKEN }}
 
  # Hämta image som finns på github reg
  #Tagga om det till latest OBS ändra tag, inte skapa en ny
@@ -69,9 +70,11 @@ jobs:
 
 
       - name: cat deploy
+        if: github.ref == 'refs/heads/main'
         run: cat manifests/flask/flask.yml
 
       - name: Commit files
+        if: github.ref == 'refs/heads/main'
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
