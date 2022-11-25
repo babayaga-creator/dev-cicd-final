@@ -64,7 +64,7 @@ jobs:
         uses: tinact/docker.image-retag@master
         with:
           image_name: final_flask
-          image_old_tag: ${{ github.ref_name }}-${{ needs.vars.outputs.output1 }}
+          image_old_tag: ${{ github.ref_name }}-${{ needs.deploy-stage.outputs.output1 }}
           image_new_tag: latest
           registry: ghcr.io/babayaga-creator
           registry_username: babayaga-creator
