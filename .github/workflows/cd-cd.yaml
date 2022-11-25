@@ -37,8 +37,8 @@ jobs:
       - name: Set short git commit SHA
         id: vars
         run: |
-          calculatedSha=$(git rev-parse --short ${{ github.sha }})
-          echo "calculatedSha" >> $GITHUB_OUTPUT
+          echo "calculatedSha=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_OUTPUT
+
 
 
       - name: Build image and push to Docker Hub and GitHub Container Registry
