@@ -80,7 +80,7 @@ jobs:
       - name: Replace image on flask deployment
         run: |
           sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/final_flask:${{ github.ref_name }}-latest/g' manifests/flask/flask.yml
-          sed -i 's/ver:.*/${{ needs.deploy-stage.outputs.output1 }}/g' manifests/flask/flask.yml
+          sed -i 's/ser:.*/ser-${{ needs.deploy-stage.outputs.output1 }}/g' manifests/flask/flask.yml
 
       - name: cat deploy
         run: cat manifests/flask/flask.yml
@@ -88,6 +88,7 @@ jobs:
       - name: Commit files
         if: github.ref == 'refs/heads/main'
         run: |
+          git pull
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add manifests/flask/flask.yml

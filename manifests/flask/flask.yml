@@ -4,7 +4,7 @@ metadata:
   name: flask-final
   labels:
     app: flask-final
-    ver: first
+    ver: ser
 
 spec:
   replicas: 3
