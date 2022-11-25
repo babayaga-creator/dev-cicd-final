@@ -4,6 +4,10 @@ on:
   workflow_dispatch:
   push:
 
+env:
+  GITHUB_REGISTRY: "ghcr.io/babayaga-creator/final_flask:"
+  SHORT_SHA: "SHA"
+
 jobs:
   deploy-stage:
     if: github.ref == 'refs/heads/dev'
@@ -35,6 +39,12 @@ jobs:
           calculatedSha=$(git rev-parse --short ${{ github.sha }})
           echo "::set-output name=short_sha::$calculatedSha"
 
+      - name: HADI LAN
+        run: |
+          $SHORT_SHA="HADILAN"
+          echo $SHORT_SHA
+
+
       - name: Build image and push to Docker Hub and GitHub Container Registry
         uses: docker/build-push-action@v3
         with:
@@ -53,15 +63,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set short git commit SHA
-        id: vars
-        run: |
-          calculatedSha=$(git rev-parse --short ${{ github.sha }})
-          echo "::set-output name=short_sha::$calculatedSha"
+ # Hämta image som finns på github reg
+ #Tagga om det till latest OBS ändra tag, inte skapa en ny
+ #Pusha om det nya taggen till github reg
 
-      - name: Replace image on flask deployment
-        run: |
-          sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/final_flask:${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}/g' manifests/flask/flask.yml
 
       - name: cat deploy
         run: cat manifests/flask/flask.yml
