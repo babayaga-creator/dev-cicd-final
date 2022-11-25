@@ -7,7 +7,6 @@ on:
 env:
   GITHUB_REGISTRY: "ghcr.io/babayaga-creator/final_flask:"
 
-
 jobs:
   deploy-stage:
     if: github.ref == 'refs/heads/dev'
@@ -39,7 +38,7 @@ jobs:
         id: vars
         run: |
           calculatedSha=$(git rev-parse --short ${{ github.sha }})
-          echo "::set-output name=short_sha::$calculatedSha"
+          echo "calculatedSha" >> $GITHUB_OUTPUT
 
 
       - name: Build image and push to Docker Hub and GitHub Container Registry
