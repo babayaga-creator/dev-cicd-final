@@ -59,6 +59,7 @@ jobs:
      steps:
 
       - name: Update the latest image
+        id: tag
         uses: tinact/docker.image-retag@master
         with:
           image_name: final_flask
@@ -67,8 +68,10 @@ jobs:
           registry: ghcr.io/babayaga-creator
           registry_username: babayaga-creator
           registry_password: ${{ secrets.TOKEN }}
+
+      - name: Print tag
         run: |
-          echo $image_new_tag
+          echo ${{ steps.tag.outputs.image_new_tag }}
 
  # Hämta image som finns på github reg
  #Tagga om det till latest OBS ändra tag, inte skapa en ny
