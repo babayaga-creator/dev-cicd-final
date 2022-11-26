@@ -83,41 +83,10 @@ jobs:
 
      if: ${{ github.event_name == 'pull_request' }}
      runs-on: "ubuntu-latest"
-     needs: deploy-stage
+
      steps:
 
       - uses: actions/checkout@v3
-      - name: Update the latest image
-        id: tag
-        uses: tinact/docker.image-retag@master
-        with:
-          image_name: final_flask
-          image_old_tag: ${{ github.ref_name }}-${{ needs.deploy-stage.outputs.output1 }}
-          image_new_tag: latest
-          registry: ghcr.io/babayaga-creator
-          registry_username: babayaga-creator
-          registry_password: ${{ secrets.TOKEN }}
-
-
-      - name: Replace image on flask deployment
-        run: |
-          sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/final_flask:${{ github.ref_name }}-latest/g' manifests/flask/flask.yml
-          sed -i 's/ser.*/ser-${{ needs.deploy-stage.outputs.output1 }}/g' manifests/flask/flask.yml
-
-      - name: cat deploy
-        run: cat manifests/flask/flask.yml
-
-      - name: Commit files
-        #if: github.ref == 'refs/heads/main'
-        run: |
-
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add manifests/flask/flask.yml
-          git commit -m "Uppdated flask.yml with new version"
-
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.TOKEN }}
-          force: true
+      - run: |
+          echo "git log |  awk '{print substr($0,7,8);exit}' > sha.txt "
+          cat sha.txt
