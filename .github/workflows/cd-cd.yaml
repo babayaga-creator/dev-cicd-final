@@ -84,7 +84,7 @@ jobs:
 
   deploy-production:
 
-     if: github.event_name == 'pull_request'  &&  github.ref == 'refs/heads/dev'
+     if: github.event_name == 'pull_request'
 
      runs-on: "ubuntu-latest"
 
