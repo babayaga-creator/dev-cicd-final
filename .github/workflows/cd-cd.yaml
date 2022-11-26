@@ -2,7 +2,7 @@ name: Final Dance
 
 on:
   workflow_dispatch:
-  push:
+  #push:
   pull_request:
     branches:
       - main
@@ -81,7 +81,7 @@ jobs:
 
   deploy-production:
 
-     if: ${{ github.event_name == 'pull_request' }}
+     if: ${{ github.event_name == 'pull_request' }} && github.ref == 'refs/heads/main'
      runs-on: "ubuntu-latest"
 
      steps:
