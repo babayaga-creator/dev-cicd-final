@@ -14,13 +14,15 @@ env:
 
 jobs:
   deploy-stage:
-    if: ${{ github.ref == 'refs/heads/dev' }}
+    if: github.ref == 'refs/heads/dev'
     runs-on: "ubuntu-latest"
     outputs:
       output1: ${{ steps.vars.outputs.short_sha }}
     steps:
 
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - run: |
           pip install -r requirements.txt
@@ -60,7 +62,6 @@ jobs:
             GIT_AUTH_TOKEN=${{ secrets.TOKEN }}
 
 
-
       - name: Run Integration tests
         run: pytest tests/integration
 
@@ -83,7 +84,7 @@ jobs:
 
   deploy-production:
 
-     if: ${{ github.event_name == 'pull_request' }} && ${{ github.ref == 'refs/heads/main' }} && ${{ success() }}
+     if: github.event_name == 'pull_request'
 
      runs-on: "ubuntu-latest"
 
@@ -100,8 +101,38 @@ jobs:
             echo "is neither MAIN nor DEV branch"
           fi
         shell: bash
-      - run: |
-          echo "git log |  awk '{print substr($0,7,8);exit}' > sha.txt "
-          cat sha.txt
-          echo $github.ref
-          cat manifests/flask/flask.yml
+
+      - name: Update the latest image
+        id: tag
+        uses: tinact/docker.image-retag@master
+        with:
+          image_name: final_flask
+          image_old_tag: ${{ github.ref_name }}-${{ needs.deploy-stage.outputs.output1 }}
+          image_new_tag: latest
+          registry: ghcr.io/babayaga-creator
+          registry_username: babayaga-creator
+          registry_password: ${{ secrets.TOKEN }}
+
+
+      - name: Replace image on flask deployment
+        run: |
+          sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/final_flask:${{ github.ref_name }}-latest/g' manifests/flask/flask.yml
+          sed -i 's/ser.*/ser-${{ needs.deploy-stage.outputs.output1 }}/g' manifests/flask/flask.yml
+
+      - name: cat deploy
+        run: cat manifests/flask/flask.yml
+
+      - name: Commit files
+        #if: github.ref == 'refs/heads/main'
+        run: |
+
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add manifests/flask/flask.yml
+          git commit -m "Uppdated flask.yml with new version"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.TOKEN }}
+          force: true
