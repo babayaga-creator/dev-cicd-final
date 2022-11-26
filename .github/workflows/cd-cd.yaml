@@ -4,8 +4,7 @@ on:
   workflow_dispatch:
   push:
   pull_request:
-    branches:
-      - main
+
 
 env:
   GITHUB_REGISTRY: "ghcr.io/babayaga-creator/final_flask:"
@@ -55,6 +54,8 @@ jobs:
 
       - name: Run Integration tests
         run: pytest tests/integration
+
+
 
   deploy-production:
 
