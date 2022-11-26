@@ -27,7 +27,14 @@ jobs:
         id: vars
         run: |
           echo "short_sha=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_OUTPUT
-          echo $(git rev-parse --short ${{ github.sha }}) > sha.txt
+
+
+      - name: Export variable for next jobs
+        uses: UnlyEd/github-action-store-variable@v2.1.0 # See https://github.com/UnlyEd/github-action-store-variable
+        with:
+          # Persist (store) our MAGIC_NUMBER ENV variable into our store, for the next jobs
+          variables: |
+            IMAGE=${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}
 
 
       - run: |
@@ -48,12 +55,6 @@ jobs:
           password: ${{ secrets.TOKEN }}
 
 
-      - name: 'Upload Artifact that storing short-sha'
-        uses: actions/upload-artifact@v3
-        with:
-          name: my-artifact
-          path: sha.txt
-          retention-days: 5
 
       - name: Replace image on flask deployment
         run: |
@@ -92,7 +93,7 @@ jobs:
 
   deploy-production:
 
-     if: github.event_name == 'pull_request' && github.event.action == 'opened'
+     if: github.event_name == 'pull_request' && github.head_ref == 'dev'
 
      runs-on: "ubuntu-latest"
 
@@ -104,9 +105,9 @@ jobs:
           echo ${{ github.ref }}
           echo ${{github.event_name}}
           echo ${{ github.head_ref }}
+
         shell:
           bash
-
 
       - run: |
           if [ ${{ github.ref }} == 'refs/heads/main' ]; then
@@ -118,23 +119,20 @@ jobs:
           fi
         shell: bash
 
-      - name: Download artifacts
-        uses: actions/download-artifact@v3
+      - name: Import variable IMAGE
+        uses: UnlyEd/github-action-store-variable@v2.1.0 # See https://github.com/UnlyEd/github-action-store-variable
         with:
-          name: my-artifact
-
-      - name: Create new outpot
-        id: sha
-        run: |
-          echo "short_sha=$(cat sha.txt)" >> $GITHUB_OUTPUT
-
+          # List all variables you want to retrieve from the store
+          # XXX They'll be automatically added to your ENV
+          variables: |
+            IMAGE
 
       - name: Update the latest image
         id: tag
         uses: tinact/docker.image-retag@master
         with:
           image_name: final_flask
-          image_old_tag: ${{ github.ref_name }}-${{ steps.sha.outputs.short_sha }}
+          image_old_tag: $IMAGE
           image_new_tag: latest
           registry: ghcr.io/babayaga-creator
           registry_username: babayaga-creator
@@ -144,7 +142,7 @@ jobs:
       - name: Replace image on flask deployment
         run: |
           sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/final_flask:${{ github.ref_name }}-latest/g' manifests/flask/flask.yml
-          sed -i 's/ser.*/ser-${{ steps.sha.outputs.short_sha  }}/g' manifests/flask/flask.yml
+          sed -i 's/ser.*/ser-$IMAGE/g' manifests/flask/flask.yml
 
       - name: cat deploy
         run: cat manifests/flask/flask.yml
