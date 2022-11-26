@@ -14,7 +14,7 @@ env:
 
 jobs:
   deploy-stage:
-    if: github.ref == 'refs/heads/dev'
+    if: ${{ github.ref == 'refs/heads/dev' }}
     runs-on: "ubuntu-latest"
     outputs:
       output1: ${{ steps.vars.outputs.short_sha }}
@@ -83,7 +83,8 @@ jobs:
 
   deploy-production:
 
-     if: ${{ github.event_name == 'pull_request' }} && github.ref == 'refs/heads/main'
+     if: ${{ github.event_name == 'pull_request' }} && ${{ github.ref == 'refs/heads/main' }} && ${{ success() }}
+
      runs-on: "ubuntu-latest"
 
      steps:
