@@ -27,14 +27,7 @@ jobs:
         id: vars
         run: |
           echo "short_sha=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_OUTPUT
-
-
-      - name: Export variable for next jobs
-        uses: UnlyEd/github-action-store-variable@v2.1.0 # See https://github.com/UnlyEd/github-action-store-variable
-        with:
-          # Persist (store) our MAGIC_NUMBER ENV variable into our store, for the next jobs
-          variables: |
-            IMAGE=${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}
+          echo ${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }} > sha.txt
 
 
       - run: |
@@ -81,6 +74,7 @@ jobs:
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add manifests/flask/flask.yml
+          git add sha.txt
           git commit -m "Uppdated flask.yml with new version"
 
       - name: Push changes
@@ -108,31 +102,19 @@ jobs:
 
         shell:
           bash
+      - name: cat sha.txt
+        id: image
+        run: |
+          echo "image=$(cat sha.txt)" >> $GITHUB_OUTPUT
 
-      - run: |
-          if [ ${{ github.ref }} == 'refs/heads/main' ]; then
-            echo "is MAIN branch"
-          elif [ ${{ github.ref }} == 'refs/heads/dev' ]; then
-            echo "is DEV branch"
-          else
-            echo "is neither MAIN nor DEV branch"
-          fi
-        shell: bash
 
-      - name: Import variable IMAGE
-        uses: UnlyEd/github-action-store-variable@v2.1.0 # See https://github.com/UnlyEd/github-action-store-variable
-        with:
-          # List all variables you want to retrieve from the store
-          # XXX They'll be automatically added to your ENV
-          variables: |
-            IMAGE
 
       - name: Update the latest image
         id: tag
         uses: tinact/docker.image-retag@master
         with:
           image_name: final_flask
-          image_old_tag: $IMAGE
+          image_old_tag: ${{ steps.image.outputs.image }}
           image_new_tag: latest
           registry: ghcr.io/babayaga-creator
           registry_username: babayaga-creator
@@ -142,7 +124,7 @@ jobs:
       - name: Replace image on flask deployment
         run: |
           sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/final_flask:${{ github.ref_name }}-latest/g' manifests/flask/flask.yml
-          sed -i 's/ser.*/ser-$IMAGE/g' manifests/flask/flask.yml
+          sed -i 's/ser.*/ser-${{ steps.image.outputs.image }}/g' manifests/flask/flask.yml
 
       - name: cat deploy
         run: cat manifests/flask/flask.yml
