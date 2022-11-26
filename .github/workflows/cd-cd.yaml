@@ -83,7 +83,7 @@ jobs:
 
   deploy-production:
 
-     if: $github.event.pull_request.base.ref == 'dev' && github.event_name == 'pull_request'
+     if: $github.event.pull_request.base.ref == 'main' && github.event_name == 'pull_request'
 
      runs-on: "ubuntu-latest"
 
