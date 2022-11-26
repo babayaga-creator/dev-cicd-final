@@ -2,7 +2,9 @@ name: Final Dance
 
 on:
   workflow_dispatch:
-  #push:
+  push:
+    branches:
+      - dev
   pull_request:
     branches:
       - main
@@ -90,4 +92,5 @@ jobs:
       - run: |
           echo "git log |  awk '{print substr($0,7,8);exit}' > sha.txt "
           cat sha.txt
+          echo github.ref
           cat manifests/flask/flask.yml
