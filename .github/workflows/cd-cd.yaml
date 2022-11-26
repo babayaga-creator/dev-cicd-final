@@ -44,15 +44,7 @@ jobs:
         id: vars
         run: |
           echo "short_sha=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_OUTPUT
-          echo "short_sha=$(git rev-parse --short ${{ github.sha }})" > sha.txt
 
-
-      - name: 'Upload Artifact that storing short-sha'
-        uses: actions/upload-artifact@v3
-        with:
-          name: my-artifact
-          path: sha.txt
-          retention-days: 5
 
       - name: Replace image on flask deployment
         run: |
@@ -91,21 +83,13 @@ jobs:
 
   deploy-production:
 
-     if: github.event_name == 'pull_request' && github.event.action == 'opened'
+     if: github.event_name == 'pull_request' && github.head_ref == 'refs/heads/main'
 
      runs-on: "ubuntu-latest"
 
      steps:
 
       - uses: actions/checkout@v3
-
-      - run: |
-          echo ${{ github.ref }}
-          echo ${{github.event_name}}
-          echo ${{ github.head_ref }}
-        shell:
-          bash
-
 
       - run: |
           if [ ${{ github.ref }} == 'refs/heads/main' ]; then
@@ -117,23 +101,12 @@ jobs:
           fi
         shell: bash
 
-      - name: Download artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: my-artifact
-
-      - name: Create new outpot
-        id: sha
-        run: |
-          echo "short_sha=$(cat sha.txt)" >> $GITHUB_OUTPUT
-
-
       - name: Update the latest image
         id: tag
         uses: tinact/docker.image-retag@master
         with:
           image_name: final_flask
-          image_old_tag: ${{ github.ref_name }}-${{ steps.sha.outputs.short_sha }}
+          image_old_tag: ${{ github.ref_name }}-${{ needs.deploy-stage.outputs.output1 }}
           image_new_tag: latest
           registry: ghcr.io/babayaga-creator
           registry_username: babayaga-creator
@@ -143,7 +116,7 @@ jobs:
       - name: Replace image on flask deployment
         run: |
           sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/final_flask:${{ github.ref_name }}-latest/g' manifests/flask/flask.yml
-          sed -i 's/ser.*/ser-${{ steps.sha.outputs.short_sha  }}/g' manifests/flask/flask.yml
+          sed -i 's/ser.*/ser-${{ needs.deploy-stage.outputs.output1 }}/g' manifests/flask/flask.yml
 
       - name: cat deploy
         run: cat manifests/flask/flask.yml
