@@ -55,7 +55,7 @@ jobs:
       - name: Replace image on flask deployment
         run: |
           sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/final_flask:${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}/g' manifests/flask/flask.yml
-          sed -i 's/ser.*/ser-${{ steps.vars.outputs.short_sha }}/g' manifests/flask/flask.yml
+
 
       - name: Build image and push to Docker Hub and GitHub Container Registry
         uses: docker/build-push-action@v3
@@ -90,7 +90,7 @@ jobs:
 
   deploy-production:
 
-     if: github.event_name == 'pull_request' && github.event.action == 'opened'
+     if: github.event_name == 'pull_request' &&  github.base_ref == 'main'
 
      runs-on: "ubuntu-latest"
 
@@ -128,13 +128,12 @@ jobs:
       - name: Replace image on flask deployment
         run: |
           sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/final_flask:main-latest/g' manifests/flask/flask.yml
-          sed -i 's/ser.*/ser-${{ steps.image.outputs.image }}/g' manifests/flask/flask.yml
+
 
       - name: cat deploy
         run: cat manifests/flask/flask.yml
 
       - name: Commit files
-        #if: github.ref == 'refs/heads/main'
         run: |
 
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
