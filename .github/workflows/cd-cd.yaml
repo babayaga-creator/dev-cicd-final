@@ -1,13 +1,12 @@
 name: Final Dance
 
 on:
-  workflow_dispatch:
+
   push:
     branches:
       - dev
   pull_request:
-    branches:
-      - main
+
 
 env:
   GITHUB_REGISTRY: "ghcr.io/babayaga-creator/final_flask:"
