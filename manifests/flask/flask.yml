@@ -5,6 +5,7 @@ metadata:
   labels:
     app: flask-final
 
+
 spec:
   replicas: 3
   selector:
@@ -41,7 +42,9 @@ spec:
           valueFrom:
             secretKeyRef:
               name: mysql-secret
+
               key: mysql-user
+
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
