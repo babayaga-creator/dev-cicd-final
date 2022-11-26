@@ -21,15 +21,11 @@ spec:
       terminationGracePeriodSeconds: 1
       containers:
       - name: flask-image
-<<<<<<< HEAD
-        image: ghcr.io/babayaga-creator/final_flask:dev-f298574
-=======
 
 
-        image: ghcr.io/babayaga-creator/final_flask:main-latest
+        image: ghcr.io/babayaga-creator/final_flask:latest
 
 
->>>>>>> b7b087e1b1b163da12427e11ba75b76f8fc7c4c6
         ports:
         - containerPort: 5000
         imagePullPolicy: Always

@@ -127,7 +127,7 @@ jobs:
 
       - name: Replace image on flask deployment
         run: |
-          sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/final_flask:main-latest/g' manifests/flask/flask.yml
+          sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/final_flask:latest/g' manifests/flask/flask.yml
 
 
       - name: cat deploy
