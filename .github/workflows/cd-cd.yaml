@@ -3,6 +3,8 @@ name: Final Dance
 on:
   workflow_dispatch:
   push:
+    branches:
+      - dev
   pull_request:
     branches:
       - main
@@ -12,7 +14,7 @@ env:
 
 jobs:
   deploy-stage:
-    if: github.ref == 'refs/heads/dev'
+    if: ${{ github.ref == 'refs/heads/dev' }}
     runs-on: "ubuntu-latest"
     outputs:
       output1: ${{ steps.vars.outputs.short_sha }}
@@ -81,12 +83,25 @@ jobs:
 
   deploy-production:
 
-     if: ${{ github.event_name == 'pull_request' }}
+     if: ${{ github.event_name == 'pull_request' }} && ${{ github.ref == 'refs/heads/main' }} && ${{ success() }}
+
      runs-on: "ubuntu-latest"
 
      steps:
 
       - uses: actions/checkout@v3
+
+      - run: |
+          if [ ${{ github.ref }} == 'refs/heads/main' ]; then
+            echo "is MAIN branch"
+          elif [ ${{ github.ref }} == 'refs/heads/dev' ]; then
+            echo "is DEV branch"
+          else
+            echo "is neither MAIN nor DEV branch"
+          fi
+        shell: bash
       - run: |
           echo "git log |  awk '{print substr($0,7,8);exit}' > sha.txt "
           cat sha.txt
+          echo $github.ref
+          cat manifests/flask/flask.yml
