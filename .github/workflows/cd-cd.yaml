@@ -4,7 +4,8 @@ on:
   workflow_dispatch:
   push:
   pull_request:
-
+    branches:
+      - main
 
 env:
   GITHUB_REGISTRY: "ghcr.io/babayaga-creator/final_flask:"
@@ -42,6 +43,10 @@ jobs:
           echo "short_sha=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_OUTPUT
 
 
+      - name: Replace image on flask deployment
+        run: |
+          sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/final_flask:${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}/g' manifests/flask/flask.yml
+          sed -i 's/ser.*/ser-${{ steps.vars.outputs.short_sha }}/g' manifests/flask/flask.yml
 
       - name: Build image and push to Docker Hub and GitHub Container Registry
         uses: docker/build-push-action@v3
@@ -52,14 +57,31 @@ jobs:
           secrets: |
             GIT_AUTH_TOKEN=${{ secrets.TOKEN }}
 
+
+
       - name: Run Integration tests
         run: pytest tests/integration
 
+      - name: Commit files
+        #if: github.ref == 'refs/heads/main'
+        run: |
+
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add manifests/flask/flask.yml
+          git commit -m "Uppdated flask.yml with new version"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.TOKEN }}
+          branch: dev
+          force: true
 
 
   deploy-production:
 
-
+     if: ${{ github.event_name == 'pull_request' }}
      runs-on: "ubuntu-latest"
      needs: deploy-stage
      steps:
@@ -77,9 +99,6 @@ jobs:
           registry_password: ${{ secrets.TOKEN }}
 
 
- # Hämta image som finns på github reg
- #Tagga om det till latest OBS ändra tag, inte skapa en ny
- #Pusha om det nya taggen till github reg
       - name: Replace image on flask deployment
         run: |
           sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/final_flask:${{ github.ref_name }}-latest/g' manifests/flask/flask.yml
