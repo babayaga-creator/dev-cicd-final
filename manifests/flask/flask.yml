@@ -23,7 +23,7 @@ spec:
       - name: flask-image
 
 
-        image: ghcr.io/babayaga-creator/final_flask:dev-9336b07
+        image: ghcr.io/babayaga-creator/final_flask:dev-ab952a3
 
 
         ports:
