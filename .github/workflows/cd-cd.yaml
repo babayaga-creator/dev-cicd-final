@@ -93,7 +93,7 @@ jobs:
 
   deploy-production:
 
-     if: github.event_name == 'pull_request' && github.head_ref == 'dev'
+     if: github.event_name == 'pull_request' && github.event.action == 'opened'
 
      runs-on: "ubuntu-latest"
 
