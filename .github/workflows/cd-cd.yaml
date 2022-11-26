@@ -90,3 +90,4 @@ jobs:
       - run: |
           echo "git log |  awk '{print substr($0,7,8);exit}' > sha.txt "
           cat sha.txt
+          cat manifests/flask/flask.yml
