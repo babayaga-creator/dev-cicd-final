@@ -44,7 +44,7 @@ jobs:
         id: vars
         run: |
           echo "short_sha=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_OUTPUT
-          echo "short_sha=$(git rev-parse --short ${{ github.sha }})" > sha.txt
+          echo (git rev-parse --short ${{ github.sha }})" > sha.txt
 
 
       - name: 'Upload Artifact that storing short-sha'
