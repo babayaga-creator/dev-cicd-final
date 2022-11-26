@@ -5,7 +5,7 @@ metadata:
   labels:
     app: flask-final
 
-    ver: ser-bf462fc
+    ver: ser-4af4e69
 
 
 spec:
@@ -25,7 +25,7 @@ spec:
       - name: flask-image
 
 
-        image: ghcr.io/babayaga-creator/final_flask:dev-bf462fc
+        image: ghcr.io/babayaga-creator/final_flask:dev-4af4e69
 
 
         ports:
@@ -45,7 +45,7 @@ spec:
             secretKeyRef:
               name: mysql-secret
 
-              key: mysql-user-bf462fc
+              key: mysql-user-4af4e69
 
 
         - name: MYSQL_PASSWORD
