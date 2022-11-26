@@ -5,7 +5,7 @@ metadata:
   labels:
     app: flask-final
 
-    ver: ser-97b2d9c
+    ver: ser-a38196b
 
 
 spec:
@@ -25,7 +25,7 @@ spec:
       - name: flask-image
 
 
-        image: ghcr.io/babayaga-creator/final_flask:dev-97b2d9c
+        image: ghcr.io/babayaga-creator/final_flask:dev-a38196b
 
 
         ports:
