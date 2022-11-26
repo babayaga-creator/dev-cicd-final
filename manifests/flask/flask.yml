@@ -5,8 +5,9 @@ metadata:
   labels:
     app: flask-final
 
+
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: flask-final
@@ -20,7 +21,15 @@ spec:
       terminationGracePeriodSeconds: 1
       containers:
       - name: flask-image
+<<<<<<< HEAD
         image: ghcr.io/babayaga-creator/final_flask:dev-f298574
+=======
+
+
+        image: ghcr.io/babayaga-creator/final_flask:main-latest
+
+
+>>>>>>> b7b087e1b1b163da12427e11ba75b76f8fc7c4c6
         ports:
         - containerPort: 5000
         imagePullPolicy: Always
@@ -37,6 +46,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: mysql-secret
+
               key: mysql-user
 
         - name: MYSQL_PASSWORD

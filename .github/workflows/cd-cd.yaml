@@ -1,16 +1,37 @@
 name: Final Dance
 
 on:
-  workflow_dispatch:
+
   push:
+    branches:
+      - dev
+  pull_request:
+
+
+env:
+  GITHUB_REGISTRY: "ghcr.io/babayaga-creator/final_flask:"
 
 jobs:
   deploy-stage:
     if: github.ref == 'refs/heads/dev'
     runs-on: "ubuntu-latest"
+    outputs:
+      output1: ${{ steps.vars.outputs.short_sha }}
     steps:
 
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set short git commit SHA
+        id: vars
+        run: |
+          echo "short_sha=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_OUTPUT
+
+
+      - run: |
+          echo ${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }} > sha.txt
+
 
       - run: |
           pip install -r requirements.txt
@@ -29,11 +50,12 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.TOKEN }}
 
-      - name: Set short git commit SHA
-        id: vars
+
+
+      - name: Replace image on flask deployment
         run: |
-          calculatedSha=$(git rev-parse --short ${{ github.sha }})
-          echo "::set-output name=short_sha::$calculatedSha"
+          sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/final_flask:${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}/g' manifests/flask/flask.yml
+
 
       - name: Build image and push to Docker Hub and GitHub Container Registry
         uses: docker/build-push-action@v3
@@ -44,36 +66,83 @@ jobs:
           secrets: |
             GIT_AUTH_TOKEN=${{ secrets.TOKEN }}
 
+
       - name: Run Integration tests
         run: pytest tests/integration
 
+      - name: Commit files
+        #if: github.ref == 'refs/heads/main'
+        run: |
+
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add manifests/flask/flask.yml
+          git add sha.txt
+          git commit -m "Uppdated flask.yml with new version"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.TOKEN }}
+          branch: dev
+          force: true
+
+
   deploy-production:
-    if: github.ref == 'refs/heads/main'
-    runs-on: "ubuntu-latest"
-    steps:
+
+     if: github.event_name == 'pull_request' &&  github.base_ref == 'main'
+
+     runs-on: "ubuntu-latest"
+
+     steps:
+
       - uses: actions/checkout@v3
 
-      - name: Set short git commit SHA
-        id: vars
+      - run: |
+          echo ${{ github.ref }}
+          echo ${{github.event_name}}
+          echo ${{ github.head_ref }}
+          echo ${{github.base_ref}}
+
+        shell:
+          bash
+      - name: cat sha.txt
+        id: image
         run: |
-          calculatedSha=$(git rev-parse --short ${{ github.sha }})
-          echo "::set-output name=short_sha::$calculatedSha"
+          echo "image=$(cat sha.txt)" >> $GITHUB_OUTPUT
+
+
+
+      - name: Update the latest image
+        id: tag
+        uses: tinact/docker.image-retag@master
+        with:
+          image_name: final_flask
+          image_old_tag: ${{ steps.image.outputs.image }}
+          image_new_tag: latest
+          registry: ghcr.io/babayaga-creator
+          registry_username: babayaga-creator
+          registry_password: ${{ secrets.TOKEN }}
+
 
       - name: Replace image on flask deployment
         run: |
-          sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/final_flask:${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}/g' manifests/flask/flask.yml
+          sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/final_flask:main-latest/g' manifests/flask/flask.yml
+
 
       - name: cat deploy
         run: cat manifests/flask/flask.yml
 
       - name: Commit files
         run: |
+
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git commit -a -m "Add changes"
-
+          git add manifests/flask/flask.yml
+          git commit -m "Uppdated flask.yml with new version"
 
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.TOKEN }}
+          force: true
