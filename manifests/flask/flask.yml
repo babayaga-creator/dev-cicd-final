@@ -41,7 +41,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: mysql-secret
-              key: mysql-user-28990b4
+              key: mysql-user
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
