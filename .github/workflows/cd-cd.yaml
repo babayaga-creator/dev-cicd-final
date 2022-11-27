@@ -119,7 +119,7 @@ jobs:
         with:
           image_name: final_flask
           image_old_tag: ${{ steps.image.outputs.image }}
-          image_new_tag: latest
+          image_new_tag: latest-v1.0.0
           registry: ghcr.io/babayaga-creator
           registry_username: babayaga-creator
           registry_password: ${{ secrets.TOKEN }}
@@ -127,7 +127,11 @@ jobs:
 
       - name: Replace image on flask deployment
         run: |
+<<<<<<< HEAD
           sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/final_flask:latest/g' manifests/flask/flask.yml
+=======
+          sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/final_flask:latest-v1.0.0/g' manifests/flask/flask.yml
+>>>>>>> f4584a52c2aeb347bb42a841b650b064aea8d53b
 
 
       - name: cat deploy
