@@ -29,7 +29,7 @@ def database_config(docker_ip, docker_services):
         "database": "example",
     }
 
-    docker_services.wait_until_responsive(timeout=30.0, pause=0.5, check=lambda: ready(config))
+    docker_services.wait_until_responsive(timeout=60.0, pause=0.5, check=lambda: ready(config))
     return config
 
 
