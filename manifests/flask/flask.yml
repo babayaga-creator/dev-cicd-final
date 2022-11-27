@@ -22,8 +22,12 @@ spec:
       containers:
       - name: flask-image
 
+<<<<<<< HEAD
 
         image: ghcr.io/babayaga-creator/final_flask:latest
+=======
+        image: ghcr.io/babayaga-creator/final_flask:main-latest
+>>>>>>> d60df27f8b9c116d76484f9de6478fa7dfce137f
 
 
         ports:
