@@ -37,3 +37,19 @@ def create_product():
             database.commit()
             return jsonify({"status": "ok"})
     return jsonify({"error": "Failed to parse json"}), 400
+
+
+def get_section_message():
+    return "Here is all the registered names"
+
+
+@bp.route("/names")
+def get_names():
+    """Show all users"""
+    with get_db().cursor() as cur:
+        cur.execute(
+            "SELECT * from user"
+
+        )
+        users = cur.fetchall()
+        return jsonify(get_section_message(), users)

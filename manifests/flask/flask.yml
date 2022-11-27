@@ -4,8 +4,6 @@ metadata:
   name: flask-final
   labels:
     app: flask-final
-
-
 spec:
   replicas: 3
   selector:
@@ -15,20 +13,14 @@ spec:
   template:
     metadata:
       labels:
-        app: flask-final
+        app: flask-
+
 
     spec:
       terminationGracePeriodSeconds: 1
       containers:
       - name: flask-image
-
-
-
-
         image: ghcr.io/babayaga-creator/final_flask:latest-v1.0.2
-
-
-
         ports:
         - containerPort: 5000
         imagePullPolicy: Always

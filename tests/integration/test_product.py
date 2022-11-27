@@ -16,3 +16,9 @@ def test_create_product(test_client, modify_db_config):
 
     response = test_client.post(url, json=data)
     assert "ok" in response.data.decode()
+
+
+def test_names(test_client, modify_db_config):
+    response = test_client.get("/product/names")
+    assert "Arif" in response.data.decode()
+    assert "Here is" in response.data.decode()
