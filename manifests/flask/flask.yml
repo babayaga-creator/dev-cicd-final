@@ -25,7 +25,7 @@ spec:
 
 
 
-        image: ghcr.io/babayaga-creator/final_flask:dev-1b3ca02
+        image: ghcr.io/babayaga-creator/final_flask:latest-v1.0.2
 
 
 
