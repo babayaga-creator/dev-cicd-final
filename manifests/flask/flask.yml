@@ -27,6 +27,7 @@ spec:
 
 
 
+
         ports:
         - containerPort: 5000
         imagePullPolicy: Always
