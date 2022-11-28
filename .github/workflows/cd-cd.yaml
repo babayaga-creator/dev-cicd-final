@@ -21,11 +21,17 @@ jobs:
 
       - uses: actions/checkout@v3
 
+      - name: Ensuring python 3.10 v and caching dependencies
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
       - run: |
-          echo ${{ github.ref }}
-          echo ${{github.event_name}}
-          echo ${{ github.head_ref }}
-          echo ${{github.base_ref}}
+          pip install -r requirements.txt
+          pylint --errors-only $(git ls-files '*.py')
+          pytest --cov=shop_app tests/unit
+
 
 
       - name: Set short git commit SHA
@@ -36,12 +42,6 @@ jobs:
 
       - run: |
           echo ${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }} > sha.txt
-
-
-      - run: |
-          pip install -r requirements.txt
-          pylint --errors-only $(git ls-files '*.py')
-          pytest --cov=shop_app tests/unit
 
 
       - name: Set up Docker Buildx
@@ -91,6 +91,16 @@ jobs:
           github_token: ${{ secrets.TOKEN }}
           branch: dev
           force: true
+
+      - name: Create pull request to main/production
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: Use latest release image
+          title: Use latest release image
+          body: This is an automated PR
+          branch: dev
+          delete-branch: true
+          token: ${{ secrets.TOKEN }}
 
 
   deploy-production:
