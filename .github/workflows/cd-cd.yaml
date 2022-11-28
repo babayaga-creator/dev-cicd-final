@@ -92,7 +92,15 @@ jobs:
           branch: dev
           force: true
 
-
+      - name: Create pull request to main/production
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: Use latest release image
+          title: Use latest release image
+          body: This is an automated PR
+          base: main
+          delete-branch: true
+          token: ${{ secrets.TOKEN }}
 
 
   deploy-production:
