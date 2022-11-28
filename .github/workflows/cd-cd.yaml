@@ -98,7 +98,7 @@ jobs:
           commit-message: Use latest release image
           title: Use latest release image
           body: This is an automated PR
-          branch: main
+          base: main
           delete-branch: true
           token: ${{ secrets.TOKEN }}
 
