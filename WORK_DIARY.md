@@ -12,13 +12,13 @@ Final Dance
 Planerade hur vi skulle utföra uppgiften.
 
 ### Day 2
-Började vi med workflow vad den skulle köra.
+Började vi med workflown, vad den skulle köra.
 
 ### Day 3
 Få workflown att fungera med enviroment variablar.
 
 ### Day 4 
-Skapade unit och integrstion tester. 
+Skapade unit och integration tester. 
 Började med pre-commitfilen(hooks).
 
 ### Day 5
