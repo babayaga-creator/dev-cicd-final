@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: webapp
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: git@github.com:babayaga-creator/dev-cicd-final
+    targetRevision: HEAD
+    path: manifests/flask-app
+
+  destination:
+    name: in-cluster
+    namespace: final
+
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
+    automated:
+      selfHeal: true
+      prune: true
