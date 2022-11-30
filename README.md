@@ -14,4 +14,4 @@ Where you will be able to connect to via your local k8 tool.
 
 4. Create a branch named dev and add, commit your changes. it will trigger a workflow named deploy-stage.
 
-5. in order to activate the second workflow named deploy-production. simply create a pull request into main from dev branch.
+5. in order to activate the second workflow named deploy-production. simply create a pull request into main from dev branch. Dont forget to remove the remote and local branch after successful merge. 
