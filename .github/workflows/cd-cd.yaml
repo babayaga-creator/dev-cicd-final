@@ -9,7 +9,7 @@ on:
 
 
 env:
-  GITHUB_REGISTRY: "ghcr.io/babayaga-creator/final_flask:"
+  GITHUB_REGISTRY: "ghcr.io/babayaga-creator/dev-cicd-final/final_flask"
 
 jobs:
   deploy-stage:
@@ -59,7 +59,7 @@ jobs:
 
       - name: Replace image on flask deployment
         run: |
-          sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/final_flask:${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}/g' manifests/flask/flask.yml
+          sed -i 's/ghcr.*/${{ env.GITHUB_REGISTRY}}:${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}/g' manifests/flask/flask.yml
 
 
       - name: Build image and push to Docker Hub and GitHub Container Registry
@@ -67,7 +67,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/babayaga-creator/final_flask:${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}
+          tags: ${{ env.GITHUB_REGISTRY}}:${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}
           secrets: |
             GIT_AUTH_TOKEN=${{ secrets.TOKEN }}
 
@@ -132,7 +132,7 @@ jobs:
 
       - name: Replace image on flask deployment
         run: |
-          sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/dev-cicd-final\/final_flask:latest/g' manifests/flask/flask.yml
+          sed -i 's/ghcr.*/${{ env.GITHUB_REGISTRY}}:latest/g' manifests/flask/flask.yml
 
 
       - name: cat deploy
