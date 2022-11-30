@@ -81,7 +81,7 @@ jobs:
 
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add manifests/flask/flask.yml
+          git add manifests/flask-app/charts/flask/templates/flask.yml
           git add sha.txt
           git commit -m "Uppdated flask.yml with new version"
 
@@ -143,7 +143,7 @@ jobs:
 
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add manifests/flask/flask.yml
+          git add manifests/flask-app/charts/flask/templates/flask.yml
           git commit -m "Uppdated flask.yml with new version"
 
       - name: Push changes
