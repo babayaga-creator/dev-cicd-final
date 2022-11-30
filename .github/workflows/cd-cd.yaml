@@ -57,11 +57,6 @@ jobs:
 
 
 
-      - name: Replace image on flask deployment
-        run: |
-          sed -i 's/ghcr.*/${{ env.GITHUB_REGISTRY}}:${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}/g' manifests/flask/flask.yml
-
-
       - name: Build image and push to Docker Hub and GitHub Container Registry
         uses: docker/build-push-action@v3
         with:
@@ -70,6 +65,11 @@ jobs:
           tags: ${{ env.GITHUB_REGISTRY}}:${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}
           secrets: |
             GIT_AUTH_TOKEN=${{ secrets.TOKEN }}
+
+
+      - name: Replace image on flask deployment
+        run: |
+          sed -i 's/ghcr.*/${{ env.GITHUB_REGISTRY}}:${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}/g' manifests/flask/flask.yml
 
 
       - name: Run Integration tests
