@@ -69,7 +69,7 @@ jobs:
 
       - name: Replace image on flask deployment
         run: |
-          sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/dev-cicd-final\/final_flask:${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}/g' manifests/flask/flask.yml
+          sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/dev-cicd-final\/final_flask:${{ github.ref_name }}-${{ steps.vars.outputs.short_sha }}/g' manifests/flask-app/charts/flask/templates/flask.yml
 
 
       - name: Run Integration tests
@@ -132,7 +132,7 @@ jobs:
 
       - name: Replace image on flask deployment
         run: |
-          sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/dev-cicd-final\/final_flask:latest/g' manifests/flask/flask.yml
+          sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/dev-cicd-final\/final_flask:latest/g' manifests/flask-app/charts/flask/templates/flask.yml
 
 
       - name: cat deploy
