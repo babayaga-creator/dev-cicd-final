@@ -8,7 +8,7 @@ Where you will be able to connect to via your local k8 tool.
 # Setup
 1. Start by creating a virtual enviroment by typing this command "python3 -m venv .venv" and activate it by typing "source .venv/bin/activate"
 
-2. Install dependices to the enviroment by typing this command "pip install -r requirments.txt.
+2. Install dependices to the enviroment by typing this command "pip install -r requirments.txt".
 
 3. And also type in this command "pre-commit install --hook-type pre-commit --hook-type pre-push" to activate you hooks before commit anything new in the project.
 
