@@ -135,8 +135,6 @@ jobs:
           sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/dev-cicd-final\/final_flask:latest/g' manifests/flask-app/charts/flask/templates/flask.yml
 
 
-      - name: cat deploy
-        run: cat manifests/flask/flask.yml
 
       - name: Commit files
         run: |
