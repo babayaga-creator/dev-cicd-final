@@ -118,7 +118,6 @@ jobs:
           echo "image=$(cat sha.txt)" >> $GITHUB_OUTPUT
 
 
-
       - name: Update the latest image
         id: tag
         uses: tinact/docker.image-retag@master
@@ -126,14 +125,14 @@ jobs:
           image_name: final_flask
           image_old_tag: ${{ steps.image.outputs.image }}
           image_new_tag: latest
-          registry: ghcr.io/babayaga-creator
+          registry: ghcr.io/babayaga-creator/dev-cicd-final
           registry_username: babayaga-creator
           registry_password: ${{ secrets.TOKEN }}
 
 
       - name: Replace image on flask deployment
         run: |
-          sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/final_flask:latest/g' manifests/flask/flask.yml
+          sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/dev-cicd-final\/final_flask:latest/g' manifests/flask/flask.yml
 
 
       - name: cat deploy
