@@ -124,7 +124,7 @@ jobs:
         with:
           image_name: final_flask
           image_old_tag: ${{ steps.image.outputs.image }}
-          image_new_tag: V1.2.6
+          image_new_tag: V1.2.7
           registry: ghcr.io/babayaga-creator/dev-cicd-final
           registry_username: babayaga-creator
           registry_password: ${{ secrets.TOKEN }}
@@ -132,7 +132,7 @@ jobs:
 
       - name: Replace image on flask deployment
         run: |
-          sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/dev-cicd-final\/final_flask:V1.2.6/g' manifests/flask-app/charts/flask/templates/flask.yml
+          sed -i 's/ghcr.*/ghcr.io\/babayaga-creator\/dev-cicd-final\/final_flask:V1.2.7/g' manifests/flask-app/charts/flask/templates/flask.yml
 
 
 
