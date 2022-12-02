@@ -4,7 +4,7 @@ kind: PersistentVolume
 
 metadata:
 
-  name: flask-pv
+  name: flask-storage
 
   labels:
 
@@ -30,7 +30,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: flask-pv-claim
+  name: flask-storage
 spec:
   storageClassName: local-path
   accessModes:
@@ -61,9 +61,9 @@ spec:
     spec:
       terminationGracePeriodSeconds: 1
       volumes:
-        - name: flask-pv
+        - name: flask-volume
           persistentVolumeClaim:
-            claimName: flask-pv-claim
+            claimName: flask-storage
 
       containers:
       - name: flask-image
