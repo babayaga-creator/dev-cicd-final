@@ -27,7 +27,6 @@ spec:
         - name: datadir
           mountPath: /var/lib/mysql/
 
-
         env:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
