@@ -74,7 +74,7 @@ spec:
         - containerPort: 5000
         imagePullPolicy: Always
         volumeMounts:
-        - name: flask-pv
+        - name: flask-storage
           mountPath: /mnt/
         env:
         - name: MYSQL_HOST
