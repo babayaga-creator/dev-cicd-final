@@ -1,29 +1,16 @@
 apiVersion: v1
-
 kind: PersistentVolume
-
 metadata:
-
   name: flask-storage
-
   labels:
-
    type: local
-
 spec:
-
   storageClassName: local-path
-
   capacity:
-
    storage: 1Gi
-
   accessModes:
-
    - ReadWriteOnce
-
   hostPath:
-
    path: "/home/arif/Desktop/pv"
 
 ---
@@ -47,7 +34,7 @@ metadata:
   labels:
     app: flask-final
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: flask-final

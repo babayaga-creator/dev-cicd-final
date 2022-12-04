@@ -1,0 +1,12 @@
+#!/bin/bash
+
+kubectl get all -n final
+
+kubectl get  secret
+
+kubectl get secret -n final
+
+kubectl get pods -n final -o wide
+
+
+kubectl exec flask-final-6fc66d894f-k7xgv -n final -- ls /mnt
